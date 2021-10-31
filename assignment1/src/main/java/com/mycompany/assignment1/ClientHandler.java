@@ -40,28 +40,32 @@ public class ClientHandler extends Thread {
                 dos.flush();
                 String start_loc = dis.readUTF();
                 
+                //  do computations on the computational nodes to get if the start point is crowded or not
+                boolean crowded = IsCrowdedNow(start_loc); 
+                
                 //  ask for the end location
                 dos.writeUTF("Please enter the end location:");
                 dos.flush();
                 String end_loc = dis.readUTF();
                 
                 //  ask for the max time to arrive
-                dos.writeUTF("Please enter the max time to arrive:");
+                dos.writeUTF("Please enter the max estimated arrival time:");
                 dos.flush();
                 String time = dis.readUTF();
                 
                 //  do computations on the computational nodes to get the best route
                 String my_route = calculateBestRoute(start_loc,end_loc,time); 
-                dos.writeUTF("The Best Route is: " + my_route );
+                dos.writeUTF("The Best Route is: " + my_route + " and The Start Location " + start_loc + " is Crowded Now");
+                dos.flush();
                 
                 //  ask if the user want another calculation
                 dos.writeUTF("Successful Best Route Calculation ,Another one [y/n]?");
                 dos.flush();
-                String usr_choice = dis.readUTF();
+                String user_ans = dis.readUTF();
                 
                 //  apply checks
                 
-                if (usr_choice.equals("n"))
+                if (user_ans.equals("n"))
                 {
                     dos.writeUTF("exit");
                     System.out.println("Calculations Done");
@@ -88,6 +92,10 @@ public class ClientHandler extends Thread {
         String[] directions = {"go to the right", "go to the left", "go back","rotate"};
         int n = directions.length-1;
         return directions[rand.nextInt()%n];
+    }
+
+    private boolean IsCrowdedNow(String start_loc) {
+        return true;
     }
     
 }
